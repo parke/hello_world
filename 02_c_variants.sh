@@ -1,7 +1,7 @@
 #! /bin/bash
 
 
-#  small / 02_c_variants.sh  version  20230921
+#  small / 02_c_variants.sh  version  20230922
 
 
 #  apadted from  https://web.archive.org/web/20160514233312/http://www.diku.dk/hjemmesider/studerende/firefly/emspace-html/node4.html
@@ -24,7 +24,7 @@ example_2  ()  {    #  --------------------------------------------  example_2
 char  hello[]  =  "Hello, C write dynamic!\n";
 
 int  _start  ()  {
-  write ( 0, hello, sizeof(hello)-1 );
+  write ( 1, hello, sizeof(hello)-1 );
   _exit ( 0 );  }
 
 EOF
@@ -88,7 +88,7 @@ example_5  ()  {    #  --------------------------------------------  example_5
 char  hello[]  =  "Hello, C write static!\n";
 
 int  main  ()  {
-  write ( 0, hello, sizeof(hello)-1 );
+  write ( 1, hello, sizeof(hello)-1 );
   return  0;  }
 
 EOF
@@ -99,6 +99,14 @@ EOF
 
   trace  cp     51_example_5_static  52_example_5_static_stripped
   trace  strip  --strip-all          52_example_5_static_stripped
+
+  if    test  -x  /usr/bin/musl-gcc
+  then  trace  musl-gcc  50_example_5.c  -o 53_example_5_musl  \
+          -no-pie  -ffreestanding  -static
+
+        trace  cp     53_example_5_musl  54_example_5_musl_stripped
+        trace  strip  --strip-all        54_example_5_musl_stripped
+        fi
 
   return  ;  }
 
@@ -112,14 +120,20 @@ main  ()  {    #  ------------------------------------------------------  main
   et  example_4
   et  example_5
 
-  et  ls  -n  -B  --color=auto
-
   et  /tmp/small/31_example_2_dynamic
   et  /tmp/small/32_example_2_dynamic_stripped
   et  /tmp/small/41_example_4_static
   et  /tmp/small/42_example_4_static_stripped
   et  /tmp/small/51_example_5_static
   et  /tmp/small/52_example_5_static_stripped
+
+  test  -x  /tmp/small/53_example_5_musl  &&
+    et  /tmp/small/53_example_5_musl
+
+  test  -x  /tmp/small/54_example_5_musl_stripped  &&
+    et  /tmp/small/54_example_5_musl_stripped
+
+  et  ls  -n  -B  --color=auto
 
   return  ;  }
 
