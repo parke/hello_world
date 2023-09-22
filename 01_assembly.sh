@@ -1,7 +1,7 @@
 #! /bin/bash
 
 
-#  small / 01_assembly.sh  version  20230921
+#  small / 01_assembly.sh  version  20230922
 
 
 #  apadted from  http://timelessname.com/elfbin/
@@ -33,7 +33,7 @@ hello_c  ()  {    #  ------------------------------------------------  hello_c
 
   #  -xc  Input language is C.
 
-  dd  of='10_hello.c'  status='none'  <<EOF
+  trace  dd  of='10_hello.c'  status='none'  <<EOF
 
 #include  <stdio.h>
 
@@ -96,6 +96,11 @@ main  ()  {    #  ------------------------------------------------------  main
 
   et  hello_c
   et  hello_asm
+
+  et  /tmp/small/12_hello_c_dynamic
+  et  /tmp/small/13_hello_c_dynamic_stripped
+  et  /tmp/small/22_hello_asm_static
+  et  /tmp/small/23_hello_asm_static_stripped
 
   et  ls  -n  -B  --color=auto
 
